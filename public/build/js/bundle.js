@@ -5,24 +5,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
 const prefiereDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
 const metodoContacto = document.querySelectorAll(['input[name="contacto[contacto]"]']);
+const preferenciaDarkMode = localStorage.getItem('darkmode');
 
-function darkMode() {
+function darkMode() {  
     
-    prefiereDarkModeF();
-    
+    if (preferenciaDarkMode != null) {
+        if (preferenciaDarkMode == "dark") {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+    } else {
+        prefiereDarkModeF(); 
+    }  
+
     const botonDarkMode = document.querySelector('.dark-mode-btn');
     
     botonDarkMode.addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode')
-    })
+        document.body.classList.toggle('dark-mode');
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem('darkmode', 'dark');
+        } else {
+            localStorage.setItem('darkmode', 'light');
+        }
+    });
 
 }
 
 function prefiereDarkModeF() {
     if (prefiereDarkMode.matches) {
-        document.body.classList.add('dark-mode')
+        document.body.classList.add('dark-mode');
     } else {
-        document.body.classList.remove('dark-mode')
+        document.body.classList.remove('dark-mode');
     }
 }
 
@@ -52,17 +66,17 @@ function mostrarMetodosContacto(e) {
     const contactoDiv = document.querySelector('#contacto');
     if(e.target.value == 'telefono') {
         contactoDiv.innerHTML = `
-        <input type="tel" placeholder="Tu n° de teléfono" id="telefono" name="contacto[telefono]">
+        <input data-cy="input-telefono-contacto" type="tel" placeholder="Tu n° de teléfono" id="telefono" name="contacto[telefono]">
         <p>Elija la fecha y la hora para ser contactado:</p>
         <label for="fecha">Fecha</label>
-        <input type="date" id="fecha" name="contacto[fecha]">
+        <input data-cy="input-fecha-contacto" type="date" id="fecha" name="contacto[fecha]">
         <label for="hora">Hora</label>
-        <input type="time" id="hora" min="09:00" max="18:00" name="contacto[hora]">
+        <input data-cy="input-hora-contacto" type="time" id="hora" min="09:00" max="18:00" name="contacto[hora]">
         `;
     }
     if(e.target.value == 'email') {
         contactoDiv.innerHTML = `
-        <input type="email" placeholder="Tu email" id="email" name="contacto[email]" required>
+        <input data-cy="input-email-contacto" type="email" placeholder="Tu email" id="email" name="contacto[email]" required>
         `;
     }
     
